@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MasMarka Carniceria - Relevamiento</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        :root { --primary: #1b5e20; --secondary: #f9a825; --bg: #f0f2f5; --surface: #ffffff; }
+        body { font-family: 'Roboto', sans-serif; margin: 0; background: var(--bg); padding-bottom: 140px; }
+        header { background: var(--primary); color: white; padding: 15px; text-align: center; font-weight: bold; position: sticky; top: 0; z-index: 1000; text-transform: uppercase; }
+        main { padding: 15px; max-width: 600px; margin: auto; }
+        .card { background: var(--surface); border-radius: 10px; padding: 15px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        label { font-size: 11px; color: var(--primary); font-weight: 700; text-transform: uppercase; display: block; margin-bottom: 5px; }
+        input { width: 100%; padding: 12px; border: 1px solid #ced4da; border-radius: 6px; box-sizing: border-box; font-size: 16px; margin-bottom: 10px; background: white; }
+        .btn-add { background: var(--secondary); color: white; border: none; padding: 15px; border-radius: 8px; font-weight: bold; width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; }
+        .item-carne { border-bottom: 1px solid #eee; padding: 15px 0; }
+        .item-carne span { font-weight: 700; color: #333; display: block; margin-bottom: 8px; font-size: 14px; text-transform: uppercase; }
+        .precios-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .price-field small { font-size: 9px; color: #666; font-weight: bold; display: block; margin-bottom: 2px; text-transform: uppercase; }
+        .footer-nav { position: fixed; bottom: 0; width: 100%; background: white; padding: 15px; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); box-sizing: border-box; z-index: 1001; }
+        .btn-submit { background: var(--primary); color: white; border: none; border-radius: 8px; padding: 15px; width: 100%; font-weight: bold; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
+    </style>
+</head>
+<body>
+
+<header>MasMarka Carniceria</header>
+
+<main>
+    <div class="card">
+        <label>Nombre del Relevador</label>
+        <input type="text" id="relevador" list="dl-relevadores" placeholder="Escribe tu nombre...">
+        <datalist id="dl-relevadores"></datalist>
+        
+        <label>Local Visitado</label>
+        <input type="text" id="local" list="dl-locales" placeholder="Buscar local...">
+        <datalist id="dl-locales"></datalist>
+
+        <label>Ciudad</label>
+        <input type="text" id="ciudad" placeholder="Ej: Asunción">
+    </div>
+
+    <div class="card">
+        <label style="color: var(--secondary);">¿Corte no encontrado en la lista?</label>
+        <button class="btn-add" onclick="agregarCampoNuevoCorte()">
+            <i class="material-icons">add_circle</i> AGREGAR NUEVO CORTE
+        </button>
+        <div id="contenedor-nuevos"></div>
+    </div>
+
+    <div class="card">
+        <input type="text" id="buscador" placeholder="Buscar en lista fija..." onkeyup="filtrar()">
+        <label style="margin-top: 15px;">Cortes del Sistema</label>
+        <div id="lista-cortes"></div>
+    </div>
+</main>
+
+<div class="footer-nav">
+    <button class="btn-submit" onclick="guardar()">
+        <i class="material-icons">cloud_upload</i> ENVIAR A GOOGLE SHEETS
+    </button>
+</div>
+
+<script>
+    const relevadores = ["BLAS LEIVA", "JUAN ZORONDO", "CARMEN LEIVA", "PEDRO YUDICE", "HECTOR ACEVEDO", "JOSE NUÑEZ", "PERLA AQUINO", "ERIKA ESPINOLA", "FLORENCIA CACERES", "MATIAS NUÑEZ", "GABRIELA CACERES", "LETICIA BARRIOS", "KORBIN MERELES", "VIDAL OZORIO", "JULIO NUÑEZ", "DERLIS BRITEZ", "JOSUE CABALLERO"];
+    const locales = ["AHO AHO", "ARETE LAMBARE", "ARETE PINEDO", "ARETE PRIMER PRESIDENTE", "ARETE SAUSALITO", "BIGGIE VILLA HAYES", "BOX ABASTO", "BOX ARATIRI R2", "BOX CAPIATA R1", "BOX LUQUE", "BOX MARIANO", "BOX MOG", "CASA RICA ESPAÑA", "CASA RICA LAURELES", "CASA RICA MOLAS", "CASA RICA PERSEVERANCIA", "DELIMARKET", "HIPERSEIS", "LA BOMBA AREGUA", "LA BOMBA ÑEMBY", "LA BOMBA PROCERES", "LA BOMBA SANTA TERESA", "LA BOMBA TERMINAL", "LA BOMBA VIA FERREA", "LOS JARDINES JACARANDA", "LOS JARDINES LAGUNA GRANDE", "LOS JARDINES MORA CUE", "LOS JARDINES PRIMAVERA", "LOS JARDINES SAN LORENZO", "LOS JARDINES SPAR", "LOS JARDINES VILLA ADELA", "LUISITO 4 MOJONES", "LUISITO CAPIATA", "LUISITO EUSEBIO AYALA", "LUISITO FELIX BOGADO", "LUISITO ITAUGUA", "LUISITO LIMPIO", "LUISITO LUQUE", "LUISITO MARIANO", "LUISITO ÑEMBY", "LUISITO SAN LORENZO", "LUISITO VILLA ELISA", "LUISITO YPANES", "S6 AREGUA", "S6 CAMBA CUA", "S6 DENIS ROA", "S6 EXPRESS MOLAS", "S6 EXPRESS PRIMER PRESIDENTE", "S6 EXPRESS RI BOQUERON", "S6 FERNANDO", "S6 GRAN UNION", "S6 JAPON", "S6 LA NEGRITA", "S6 LAMBARE", "S6 LAURELTY", "S6 LOS LAURELES", "S6 MADERO", "S6 MBURUCUYA", "S6 SAN LORENZO", "S6 TOTAL", "S6 VILLA MORRA", "SALEMMA CARMELITAS", "SALEMMA FUENTE", "SALEMMA MULTIPLAZA", "SALEMMA SAN LORENZO", "STOCK 14 Y MEDIO", "STOCK ACCESO SUR", "STOCK AGRONOMO", "STOCK ARTIGAS", "STOCK AVELINO", "STOCK BARRIO OBRERO", "STOCK BOQUERON", "STOCK BRASILIA 1", "STOCK BRASILIA 2", "STOCK BRITEZ BORGES", "STOCK CAACUPE 1", "STOCK CAACUPE 2", "STOCK CALLE I", "STOCK CAPIATA R1", "STOCK CAPIATA R2", "STOCK CARRETERA", "STOCK DEFENSORES", "STOCK DOÑA BERTA", "STOCK EPXRESS 10 de AGOSTO", "STOCK EXPRES FIGUEROA", "STOCK EXPRES TTE MOLAS", "STOCK EXPRESS ACOSTA ÑU", "STOCK EXPRESS AMERICO PICCO", "STOCK EXPRESS AVDA PARAGUAY"];
+    const cortes = ["BOLA DE LOMO", "LOMO", "LOMO DE CERDO", "CARNAZA BLANCA", "CARNAZA NEGRA", "COSTILLA DE PRIMERA", "COSTILLA TIRA ANCHA", "LOMITO", "PECETO", "RABADILLA", "SOBRE COSTILLA (CARNAZA DE SEGUNDA )", "TORTUGUITA O SAMBARI", "VACIO A GRANEL", "TAPA CUADRIL", "COLITA CUADRIL", "BIFE DE CHORIZO", "VACIO", "OJO DE BIFE", "COSTILLA DE CERDO", "BONDIOLA  DE CERDO", "PERNIL (PIERNA DE CERDO)", "PALETA  DE CERDO", "CHULETA DE CERDO", "COSTILLA DE SEGUNDA "];
+
+    function inicializarApp() {
+        const dlR = document.getElementById('dl-relevadores');
+        dlR.innerHTML = "";
+        relevadores.forEach(r => { dlR.innerHTML += `<option value="${r}">`; });
+
+        const dlL = document.getElementById('dl-locales');
+        dlL.innerHTML = "";
+        locales.sort().forEach(l => { dlL.innerHTML += `<option value="${l}">`; });
+
+        const contCortes = document.getElementById('lista-cortes');
+        contCortes.innerHTML = "";
+        cortes.sort().forEach(c => {
+            const div = document.createElement('div');
+            div.className = 'item-carne';
+            div.innerHTML = `<span>${c}</span>
+                <div class="precios-row">
+                    <div class="price-field"><small>PRECIO REGULAR</small><input type="number" class="p-reg" placeholder="Gs."></div>
+                    <div class="price-field"><small>PRECIO OFERTA</small><input type="number" class="p-off" placeholder="Gs."></div>
+                </div>`;
+            contCortes.appendChild(div);
+        });
+    }
+
+    // Ejecutar al cargar la ventana
+    window.addEventListener('load', inicializarApp);
+
+    function agregarCampoNuevoCorte() {
+        const id = Date.now();
+        const div = document.createElement('div');
+        div.className = 'nuevo-corte-item';
+        div.id = `nuevo-${id}`;
+        div.innerHTML = `<i class="material-icons btn-remove" onclick="document.getElementById('nuevo-${id}').remove()">cancel</i>
+            <label>Corte Nuevo</label><input type="text" class="n-nombre" placeholder="Nombre del producto...">
+            <div class="precios-row">
+                <div class="price-field"><small>MARCA</small><input type="text" class="n-marca" placeholder="Marca..."></div>
+                <div class="price-field"><small>PRECIO REGULAR</small><input type="number" class="n-precio" placeholder="Gs."></div>
+            </div>`;
+        document.getElementById('contenedor-nuevos').appendChild(div);
+    }
+
+    async function guardar() {
+        const url = "https://script.google.com/macros/s/AKfycbyiVWuv3SAX7CEMdkHGcHKg-NIptCj9kS5NOSl1h6M6UCDH7Tl0IAI_twTbopZvuqRi0Q/exec";
+        const r = document.getElementById('relevador').value;
+        const l = document.getElementById('local').value;
+        const items = [];
+
+        document.querySelectorAll('.item-carne').forEach(div => {
+            const reg = div.querySelector('.p-reg').value;
+            const off = div.querySelector('.p-off').value;
+            if(reg || off) {
+                items.push({ corte: div.querySelector('span').innerText, precioReg: reg || 0, precioOff: off || 0, esNuevo: false });
+            }
+        });
+
+        document.querySelectorAll('.nuevo-corte-item').forEach(div => {
+            const nom = div.querySelector('.n-nombre').value;
+            const pre = div.querySelector('.n-precio').value;
+            if(nom && pre) {
+                items.push({ corte: nom, precioReg: pre, precioOff: "NUEVO", marca: div.querySelector('.n-marca').value, esNuevo: true });
+            }
+        });
+
+        if(!r || !l || items.length === 0) return alert("Completa Relevador, Local e ingresa al menos un precio.");
+
+        try {
+            await fetch(url, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ fecha: new Date().toLocaleString(), relevador: r, local: l, ciudad: document.getElementById('ciudad').value, items: items }) });
+            alert("¡Datos enviados correctamente!");
+            location.reload();
+        } catch(e) { alert("Error de red: Intenta nuevamente."); }
+    }
+
+    function filtrar() {
+        const t = document.getElementById('buscador').value.toLowerCase();
+        document.querySelectorAll('.item-carne').forEach(i => {
+            i.style.display = i.querySelector('span').innerText.toLowerCase().includes(t) ? 'block' : 'none';
+        });
+    }
+</script>
+</body>
+</html>
