@@ -3,145 +3,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MasMarka Carniceria - Relevamiento</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <title>PrendasPYapp</title>
     <style>
-        :root { --primary: #1b5e20; --secondary: #f9a825; --bg: #f0f2f5; --surface: #ffffff; }
-        body { font-family: 'Roboto', sans-serif; margin: 0; background: var(--bg); padding-bottom: 140px; }
-        header { background: var(--primary); color: white; padding: 15px; text-align: center; font-weight: bold; position: sticky; top: 0; z-index: 1000; text-transform: uppercase; }
+        :root { --primary: #1b5e20; --secondary: #f9a825; --bg: #f0f2f5; --error: #d32f2f; --disabled: #9e9e9e; }
+        body { font-family: sans-serif; margin: 0; background: var(--bg); padding-bottom: 120px; }
+        header { background: var(--primary); color: white; padding: 15px; text-align: center; font-weight: bold; position: sticky; top: 0; z-index: 100; text-transform: uppercase; }
         main { padding: 15px; max-width: 600px; margin: auto; }
-        .card { background: var(--surface); border-radius: 10px; padding: 15px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        label { font-size: 11px; color: var(--primary); font-weight: 700; text-transform: uppercase; display: block; margin-bottom: 5px; }
-        input { width: 100%; padding: 12px; border: 1px solid #ced4da; border-radius: 6px; box-sizing: border-box; font-size: 16px; margin-bottom: 10px; background: white; }
-        .btn-add { background: var(--secondary); color: white; border: none; padding: 15px; border-radius: 8px; font-weight: bold; width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; }
+        .card { background: white; border-radius: 10px; padding: 15px; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        label { font-size: 11px; color: var(--primary); font-weight: bold; display: block; margin-bottom: 5px; text-transform: uppercase; }
+        input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 16px; margin-bottom: 5px; }
+        .error-msg { color: var(--error); font-size: 10px; font-weight: bold; display: none; margin-bottom: 10px; }
         .item-carne { border-bottom: 1px solid #eee; padding: 15px 0; }
-        .item-carne span { font-weight: 700; color: #333; display: block; margin-bottom: 8px; font-size: 14px; text-transform: uppercase; }
-        .precios-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .price-field small { font-size: 9px; color: #666; font-weight: bold; display: block; margin-bottom: 2px; text-transform: uppercase; }
-        .footer-nav { position: fixed; bottom: 0; width: 100%; background: white; padding: 15px; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); box-sizing: border-box; z-index: 1001; }
-        .btn-submit { background: var(--primary); color: white; border: none; border-radius: 8px; padding: 15px; width: 100%; font-weight: bold; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .precios-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 5px; }
+        .footer { position: fixed; bottom: 0; width: 100%; background: white; padding: 15px; box-sizing: border-box; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); }
+        .btn-submit { background: var(--primary); color: white; border: none; border-radius: 8px; padding: 15px; width: 100%; font-weight: bold; font-size: 16px; cursor: pointer; }
+        .btn-submit:disabled { background: var(--disabled); cursor: not-allowed; }
+        .btn-add { background: var(--secondary); color: white; border: none; padding: 15px; border-radius: 8px; width: 100%; font-weight: bold; margin-bottom: 10px; cursor: pointer; text-transform: uppercase; }
     </style>
 </head>
-<body>
+<body onload="init()">
 
-<header>MasMarka Carniceria</header>
+<header>RELEVAMIENTO PRENDASPYAPP</header>
 
 <main>
     <div class="card">
-        <label>Nombre del Relevador</label>
-        <input type="text" id="relevador" list="dl-relevadores" placeholder="Escribe tu nombre...">
-        <datalist id="dl-relevadores"></datalist>
-        
-        <label>Local Visitado</label>
-        <input type="text" id="local" list="dl-locales" placeholder="Buscar local...">
-        <datalist id="dl-locales"></datalist>
+        <label>NOMBRE DEL RELEVADOR</label>
+        <input type="text" id="relevador" list="dl-relevadores" placeholder="Seleccione relevador..." oninput="checkForm()">
+        <datalist id="dl-relevadores">
+            <option value="BLAS LEIVA"><option value="JUAN ZORONDO"><option value="CARMEN LEIVA"><option value="PEDRO YUDICE"><option value="HECTOR ACEVEDO"><option value="JOSE NUÑEZ"><option value="PERLA AQUINO"><option value="ERIKA ESPINOLA"><option value="FLORENCIA CACERES"><option value="MATIAS NUÑEZ"><option value="GABRIELA CACERES"><option value="LETICIA BARRIOS"><option value="KORBIN MERELES"><option value="VIDAL OZORIO"><option value="JULIO NUÑEZ"><option value="DERLIS BRITEZ"><option value="JOSUE CABALLERO">
+        </datalist>
 
-        <label>Ciudad</label>
+        <label>LOCAL VISITADO</label>
+        <input type="text" id="local" list="dl-locales" placeholder="Escriba o busque local..." oninput="checkForm()">
+        <datalist id="dl-locales">
+            <option value="AHO AHO"><option value="ARETE LAMBARE"><option value="ARETE PINEDO"><option value="ARETE PRIMER PRESIDENTE"><option value="ARETE SAUSALITO"><option value="BIGGIE VILLA HAYES"><option value="BOX ABASTO"><option value="BOX ARATIRI R2"><option value="BOX CAPIATA R1"><option value="BOX LUQUE"><option value="BOX MARIANO"><option value="BOX MOG"><option value="CASA RICA ESPAÑA"><option value="CASA RICA LAURELES"><option value="CASA RICA MOLAS"><option value="CASA RICA PERSEVERANCIA"><option value="DELIMARKET"><option value="HIPERSEIS"><option value="LA BOMBA AREGUA"><option value="LA BOMBA ÑEMBY"><option value="LA BOMBA PROCERES"><option value="LA BOMBA SANTA TERESA"><option value="LA BOMBA TERMINAL"><option value="LA BOMBA VIA FERREA"><option value="LOS JARDINES JACARANDA"><option value="LOS JARDINES LAGUNA GRANDE"><option value="LOS JARDINES MORA CUE"><option value="LOS JARDINES PRIMAVERA"><option value="LOS JARDINES SAN LORENZO"><option value="LOS JARDINES SPAR"><option value="LOS JARDINES VILLA ADELA"><option value="LUISITO 4 MOJONES"><option value="LUISITO CAPIATA"><option value="LUISITO EUSEBIO AYALA"><option value="LUISITO FELIX BOGADO"><option value="LUISITO ITAUGUA"><option value="LUISITO LIMPIO"><option value="LUISITO LUQUE"><option value="LUISITO MARIANO"><option value="LUISITO ÑEMBY"><option value="LUISITO SAN LORENZO"><option value="LUISITO VILLA ELISA"><option value="LUISITO YPANES"><option value="S6 AREGUA"><option value="S6 CAMBA CUA"><option value="S6 DENIS ROA"><option value="S6 EXPRESS MOLAS"><option value="S6 EXPRESS PRIMER PRESIDENTE"><option value="S6 EXPRESS RI BOQUERON"><option value="S6 FERNANDO"><option value="S6 GRAN UNION"><option value="S6 JAPON"><option value="S6 LA NEGRITA"><option value="S6 LAMBARE"><option value="S6 LAURELTY"><option value="S6 LOS LAURELES"><option value="S6 MADERO"><option value="S6 MBURUCUYA"><option value="S6 SAN LORENZO"><option value="S6 TOTAL"><option value="S6 VILLA MORRA"><option value="SALEMMA CARMELITAS"><option value="SALEMMA FUENTE"><option value="SALEMMA MULTIPLAZA"><option value="SALEMMA SAN LORENZO"><option value="STOCK 14 Y MEDIO"><option value="STOCK ACCESO SUR"><option value="STOCK AGRONOMO"><option value="STOCK ARTIGAS"><option value="STOCK AVELINO"><option value="STOCK BARRIO OBRERO"><option value="STOCK BOQUERON"><option value="STOCK BRASILIA 1"><option value="STOCK BRASILIA 2"><option value="STOCK BRITEZ BORGES"><option value="STOCK CAACUPE 1"><option value="STOCK CAACUPE 2"><option value="STOCK CALLE I"><option value="STOCK CAPIATA R1"><option value="STOCK CAPIATA R2"><option value="STOCK CARRETERA"><option value="STOCK DEFENSORES"><option value="STOCK DOÑA BERTA"><option value="STOCK EPXRESS 10 de AGOSTO"><option value="STOCK EXPRES FIGUEROA"><option value="STOCK EXPRES TTE MOLAS"><option value="STOCK EXPRESS ACOSTA ÑU"><option value="STOCK EXPRESS AMERICO PICCO"><option value="STOCK EXPRESS AVDA PARAGUAY">
+        </datalist>
+
+        <label>CIUDAD</label>
         <input type="text" id="ciudad" placeholder="Ej: Asunción">
     </div>
 
-    <div class="card">
-        <label style="color: var(--secondary);">¿Corte no encontrado en la lista?</label>
-        <button class="btn-add" onclick="agregarCampoNuevoCorte()">
-            <i class="material-icons">add_circle</i> AGREGAR NUEVO CORTE
-        </button>
-        <div id="contenedor-nuevos"></div>
-    </div>
+    <button class="btn-add" onclick="agregarNuevo()">+ AGREGAR NUEVO CORTE</button>
+    <div id="contenedor-nuevos"></div>
 
     <div class="card">
-        <input type="text" id="buscador" placeholder="Buscar en lista fija..." onkeyup="filtrar()">
-        <label style="margin-top: 15px;">Cortes del Sistema</label>
+        <label>LISTADO DE CORTES</label>
+        <input type="text" id="buscador" placeholder="Ej: Lomo" onkeyup="filtrar()">
         <div id="lista-cortes"></div>
     </div>
 </main>
 
-<div class="footer-nav">
-    <button class="btn-submit" onclick="guardar()">
-        <i class="material-icons">cloud_upload</i> ENVIAR A GOOGLE SHEETS
-    </button>
+<div class="footer">
+    <button id="btnGuardar" class="btn-submit" onclick="validarYGuardar()">GUARDAR RELEVAMIENTO</button>
 </div>
 
 <script>
-    const relevadores = ["BLAS LEIVA", "JUAN ZORONDO", "CARMEN LEIVA", "PEDRO YUDICE", "HECTOR ACEVEDO", "JOSE NUÑEZ", "PERLA AQUINO", "ERIKA ESPINOLA", "FLORENCIA CACERES", "MATIAS NUÑEZ", "GABRIELA CACERES", "LETICIA BARRIOS", "KORBIN MERELES", "VIDAL OZORIO", "JULIO NUÑEZ", "DERLIS BRITEZ", "JOSUE CABALLERO"];
-    const locales = ["AHO AHO", "ARETE LAMBARE", "ARETE PINEDO", "ARETE PRIMER PRESIDENTE", "ARETE SAUSALITO", "BIGGIE VILLA HAYES", "BOX ABASTO", "BOX ARATIRI R2", "BOX CAPIATA R1", "BOX LUQUE", "BOX MARIANO", "BOX MOG", "CASA RICA ESPAÑA", "CASA RICA LAURELES", "CASA RICA MOLAS", "CASA RICA PERSEVERANCIA", "DELIMARKET", "HIPERSEIS", "LA BOMBA AREGUA", "LA BOMBA ÑEMBY", "LA BOMBA PROCERES", "LA BOMBA SANTA TERESA", "LA BOMBA TERMINAL", "LA BOMBA VIA FERREA", "LOS JARDINES JACARANDA", "LOS JARDINES LAGUNA GRANDE", "LOS JARDINES MORA CUE", "LOS JARDINES PRIMAVERA", "LOS JARDINES SAN LORENZO", "LOS JARDINES SPAR", "LOS JARDINES VILLA ADELA", "LUISITO 4 MOJONES", "LUISITO CAPIATA", "LUISITO EUSEBIO AYALA", "LUISITO FELIX BOGADO", "LUISITO ITAUGUA", "LUISITO LIMPIO", "LUISITO LUQUE", "LUISITO MARIANO", "LUISITO ÑEMBY", "LUISITO SAN LORENZO", "LUISITO VILLA ELISA", "LUISITO YPANES", "S6 AREGUA", "S6 CAMBA CUA", "S6 DENIS ROA", "S6 EXPRESS MOLAS", "S6 EXPRESS PRIMER PRESIDENTE", "S6 EXPRESS RI BOQUERON", "S6 FERNANDO", "S6 GRAN UNION", "S6 JAPON", "S6 LA NEGRITA", "S6 LAMBARE", "S6 LAURELTY", "S6 LOS LAURELES", "S6 MADERO", "S6 MBURUCUYA", "S6 SAN LORENZO", "S6 TOTAL", "S6 VILLA MORRA", "SALEMMA CARMELITAS", "SALEMMA FUENTE", "SALEMMA MULTIPLAZA", "SALEMMA SAN LORENZO", "STOCK 14 Y MEDIO", "STOCK ACCESO SUR", "STOCK AGRONOMO", "STOCK ARTIGAS", "STOCK AVELINO", "STOCK BARRIO OBRERO", "STOCK BOQUERON", "STOCK BRASILIA 1", "STOCK BRASILIA 2", "STOCK BRITEZ BORGES", "STOCK CAACUPE 1", "STOCK CAACUPE 2", "STOCK CALLE I", "STOCK CAPIATA R1", "STOCK CAPIATA R2", "STOCK CARRETERA", "STOCK DEFENSORES", "STOCK DOÑA BERTA", "STOCK EPXRESS 10 de AGOSTO", "STOCK EXPRES FIGUEROA", "STOCK EXPRES TTE MOLAS", "STOCK EXPRESS ACOSTA ÑU", "STOCK EXPRESS AMERICO PICCO", "STOCK EXPRESS AVDA PARAGUAY"];
-    const cortes = ["BOLA DE LOMO", "LOMO", "LOMO DE CERDO", "CARNAZA BLANCA", "CARNAZA NEGRA", "COSTILLA DE PRIMERA", "COSTILLA TIRA ANCHA", "LOMITO", "PECETO", "RABADILLA", "SOBRE COSTILLA (CARNAZA DE SEGUNDA )", "TORTUGUITA O SAMBARI", "VACIO A GRANEL", "TAPA CUADRIL", "COLITA CUADRIL", "BIFE DE CHORIZO", "VACIO", "OJO DE BIFE", "COSTILLA DE CERDO", "BONDIOLA  DE CERDO", "PERNIL (PIERNA DE CERDO)", "PALETA  DE CERDO", "CHULETA DE CERDO", "COSTILLA DE SEGUNDA "];
+    const urlApp = "https://script.google.com/macros/s/AKfycbwsKGuK6ASxUDroetcY2mn_qlL9CkAqTL-VWvvL8kxJG7hCwBCwIQa5RKnHV8VbcNWSqQ/exec";
+    const carnes = ["BOLA DE LOMO", "LOMO", "LOMO DE CERDO", "CARNAZA BLANCA", "CARNAZA NEGRA", "COSTILLA DE PRIMERA", "COSTILLA TIRA ANCHA", "LOMITO", "PECETO", "RABADILLA", "SOBRE COSTILLA (CARNAZA DE SEGUNDA )", "TORTUGUITA O SAMBARI", "VACIO A GRANEL", "TAPA CUADRIL", "COLITA CUADRIL", "BIFE DE CHORIZO", "VACIO", "OJO DE BIFE", "COSTILLA DE CERDO", "BONDIOLA  DE CERDO", "PERNIL (PIERNA DE CERDO)", "PALETA  DE CERDO", "CHULETA DE CERDO", "COSTILLA DE SEGUNDA"];
 
-    function inicializarApp() {
-        const dlR = document.getElementById('dl-relevadores');
-        dlR.innerHTML = "";
-        relevadores.forEach(r => { dlR.innerHTML += `<option value="${r}">`; });
-
-        const dlL = document.getElementById('dl-locales');
-        dlL.innerHTML = "";
-        locales.sort().forEach(l => { dlL.innerHTML += `<option value="${l}">`; });
-
-        const contCortes = document.getElementById('lista-cortes');
-        contCortes.innerHTML = "";
-        cortes.sort().forEach(c => {
+    function init() {
+        const cont = document.getElementById('lista-cortes');
+        carnes.forEach(c => {
             const div = document.createElement('div');
             div.className = 'item-carne';
-            div.innerHTML = `<span>${c}</span>
-                <div class="precios-row">
-                    <div class="price-field"><small>PRECIO REGULAR</small><input type="number" class="p-reg" placeholder="Gs."></div>
-                    <div class="price-field"><small>PRECIO OFERTA</small><input type="number" class="p-off" placeholder="Gs."></div>
-                </div>`;
-            contCortes.appendChild(div);
+            div.innerHTML = `<span style="font-weight:bold; font-size:14px;">${c}</span><div class="precios-row"><div><small>REGULAR</small><input type="number" class="p-reg" oninput="validaInput(this)"><div class="error-msg">Debe tener 5 o 6 números</div></div><div><small>PROMO</small><input type="number" class="p-off" oninput="validaInput(this)"><div class="error-msg">Debe tener 5 o 6 números</div></div></div>`;
+            cont.appendChild(div);
         });
+        checkForm();
     }
 
-    // Ejecutar al cargar la ventana
-    window.addEventListener('load', inicializarApp);
-
-    function agregarCampoNuevoCorte() {
-        const id = Date.now();
-        const div = document.createElement('div');
-        div.className = 'nuevo-corte-item';
-        div.id = `nuevo-${id}`;
-        div.innerHTML = `<i class="material-icons btn-remove" onclick="document.getElementById('nuevo-${id}').remove()">cancel</i>
-            <label>Corte Nuevo</label><input type="text" class="n-nombre" placeholder="Nombre del producto...">
-            <div class="precios-row">
-                <div class="price-field"><small>MARCA</small><input type="text" class="n-marca" placeholder="Marca..."></div>
-                <div class="price-field"><small>PRECIO REGULAR</small><input type="number" class="n-precio" placeholder="Gs."></div>
-            </div>`;
-        document.getElementById('contenedor-nuevos').appendChild(div);
+    function validaInput(el) {
+        const row = el.closest('.precios-row');
+        const rVal = parseFloat(row.querySelector('.p-reg').value) || 0;
+        const oVal = parseFloat(row.querySelector('.p-off').value) || 0;
+        const err = el.nextElementSibling;
+        
+        // 1. Validar longitud
+        if (el.value.length > 0 && (el.value.length < 5 || el.value.length > 6)) {
+            err.innerText = "Debe tener 5 o 6 números";
+            err.style.display = 'block';
+            el.style.borderColor = 'var(--error)';
+        } else if (rVal > 0 && oVal > 0 && oVal > rVal) { // Validación lógica
+            const offErr = row.querySelector('.p-off').nextElementSibling;
+            offErr.innerText = "⚠️ PROMO mayor al Regular";
+            offErr.style.display = 'block';
+            row.querySelector('.p-off').style.borderColor = 'var(--error)';
+        } else {
+            err.style.display = 'none';
+            el.style.borderColor = '#ccc';
+        }
+        checkForm();
     }
 
-    async function guardar() {
-        const url = "https://script.google.com/macros/s/AKfycbyiVWuv3SAX7CEMdkHGcHKg-NIptCj9kS5NOSl1h6M6UCDH7Tl0IAI_twTbopZvuqRi0Q/exec";
-        const r = document.getElementById('relevador').value;
-        const l = document.getElementById('local').value;
-        const items = [];
-
-        document.querySelectorAll('.item-carne').forEach(div => {
-            const reg = div.querySelector('.p-reg').value;
-            const off = div.querySelector('.p-off').value;
-            if(reg || off) {
-                items.push({ corte: div.querySelector('span').innerText, precioReg: reg || 0, precioOff: off || 0, esNuevo: false });
-            }
-        });
-
-        document.querySelectorAll('.nuevo-corte-item').forEach(div => {
-            const nom = div.querySelector('.n-nombre').value;
-            const pre = div.querySelector('.n-precio').value;
-            if(nom && pre) {
-                items.push({ corte: nom, precioReg: pre, precioOff: "NUEVO", marca: div.querySelector('.n-marca').value, esNuevo: true });
-            }
-        });
-
-        if(!r || !l || items.length === 0) return alert("Completa Relevador, Local e ingresa al menos un precio.");
-
-        try {
-            await fetch(url, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ fecha: new Date().toLocaleString(), relevador: r, local: l, ciudad: document.getElementById('ciudad').value, items: items }) });
-            alert("¡Datos enviados correctamente!");
-            location.reload();
-        } catch(e) { alert("Error de red: Intenta nuevamente."); }
+    function checkForm() {
+        const btn = document.getElementById('btnGuardar');
+        const rel = document.getElementById('relevador').value;
+        const loc = document.getElementById('local').value;
+        const errores = Array.from(document.querySelectorAll('.error-msg')).some(e => e.style.display === 'block');
+        
+        btn.disabled = (!rel || !loc || errores);
+        btn.innerText = errores ? "⚠️ CORREGIR DATOS" : "GUARDAR RELEVAMIENTO";
     }
 
     function filtrar() {
-        const t = document.getElementById('buscador').value.toLowerCase();
-        document.querySelectorAll('.item-carne').forEach(i => {
-            i.style.display = i.querySelector('span').innerText.toLowerCase().includes(t) ? 'block' : 'none';
+        const val = document.getElementById('buscador').value.toUpperCase();
+        document.querySelectorAll('.item-carne').forEach(item => {
+            const txt = item.querySelector('span').innerText.toUpperCase();
+            item.style.display = txt.startsWith(val) ? "block" : "none";
+        });
+    }
+
+    function agregarNuevo() {
+        const id = Date.now();
+        const div = document.createElement('div');
+        div.className = 'card nuevo-corte-item';
+        div.id = id;
+        div.innerHTML = `<label>CORTE NUEVO</label><input type="text" class="n-nombre"><label>MARCA</label><input type="text" class="n-marca"><label>PRECIO</label><input type="number" class="n-precio" oninput="validaInput(this)"><div class="error-msg">Debe tener 5 o 6 números</div><button onclick="document.getElementById('${id}').remove(); checkForm();" style="color:var(--error); background:none; border:none; cursor:pointer;">ELIMINAR</button>`;
+        document.getElementById('contenedor-nuevos').appendChild(div);
+        checkForm();
+    }
+
+    function validarYGuardar() {
+        const fijos = [];
+        document.querySelectorAll('.item-carne').forEach(item => {
+            const r = item.querySelector('.p-reg').value;
+            const o = item.querySelector('.p-off').value;
+            if(r || o) fijos.push({corte: item.querySelector('span').innerText, precioReg: r, precioOff: o});
+        });
+
+        const nuevos = [];
+        document.querySelectorAll('.nuevo-corte-item').forEach(item => {
+            const nom = item.querySelector('.n-nombre').value;
+            const mar = item.querySelector('.n-marca').value;
+            const pre = item.querySelector('.n-precio').value;
+            if(nom && pre) nuevos.push({nombre: nom, marca: mar, precio: pre});
+        });
+
+        fetch(urlApp, {
+            method: 'POST',
+            mode: 'no-cors',
+            body: JSON.stringify({
+                relevador: document.getElementById('relevador').value,
+                local: document.getElementById('local').value,
+                ciudad: document.getElementById('ciudad').value,
+                items: fijos, 
+                nuevos: nuevos
+            })
+        }).then(() => {
+            alert("¡Guardado en PrendasPYapp!");
+            location.reload();
         });
     }
 </script>
