@@ -74,24 +74,41 @@
 
     function validaInput(el) {
         const row = el.closest('.precios-row');
-        const rVal = parseFloat(row.querySelector('.p-reg').value) || 0;
-        const oVal = parseFloat(row.querySelector('.p-off').value) || 0;
-        const err = el.nextElementSibling;
+        const regInput = row.querySelector('.p-reg');
+        const offInput = row.querySelector('.p-off');
+        const rVal = parseFloat(regInput.value) || 0;
+        const oVal = parseFloat(offInput.value) || 0;
         
-        // 1. Validar longitud
-        if (el.value.length > 0 && (el.value.length < 5 || el.value.length > 6)) {
-            err.innerText = "Debe tener 5 o 6 números";
-            err.style.display = 'block';
-            el.style.borderColor = 'var(--error)';
-        } else if (rVal > 0 && oVal > 0 && oVal > rVal) { // Validación lógica
-            const offErr = row.querySelector('.p-off').nextElementSibling;
-            offErr.innerText = "⚠️ PROMO mayor al Regular";
-            offErr.style.display = 'block';
-            row.querySelector('.p-off').style.borderColor = 'var(--error)';
-        } else {
-            err.style.display = 'none';
-            el.style.borderColor = '#ccc';
+        const errReg = regInput.nextElementSibling;
+        const errOff = offInput.nextElementSibling;
+
+        // Resetear estilos y mensajes
+        errReg.style.display = 'none';
+        errOff.style.display = 'none';
+        regInput.style.borderColor = '#ccc';
+        offInput.style.borderColor = '#ccc';
+
+        // 1. Validar longitud Regular
+        if (regInput.value.length > 0 && (regInput.value.length < 5 || regInput.value.length > 6)) {
+            errReg.innerText = "Debe tener 5 o 6 números";
+            errReg.style.display = 'block';
+            regInput.style.borderColor = 'var(--error)';
         }
+
+        // 2. Validar longitud Promo
+        if (offInput.value.length > 0 && (offInput.value.length < 5 || offInput.value.length > 6)) {
+            errOff.innerText = "Debe tener 5 o 6 números";
+            errOff.style.display = 'block';
+            offInput.style.borderColor = 'var(--error)';
+        }
+
+        // 3. Validación lógica (Promo no puede ser mayor al Regular)
+        if (rVal > 0 && oVal > 0 && oVal > rVal) {
+            errOff.innerText = "⚠️ PROMO mayor al Regular";
+            errOff.style.display = 'block';
+            offInput.style.borderColor = 'var(--error)';
+        }
+
         checkForm();
     }
 
@@ -100,7 +117,6 @@
         const rel = document.getElementById('relevador').value;
         const loc = document.getElementById('local').value;
         const errores = Array.from(document.querySelectorAll('.error-msg')).some(e => e.style.display === 'block');
-        
         btn.disabled = (!rel || !loc || errores);
         btn.innerText = errores ? "⚠️ CORREGIR DATOS" : "GUARDAR RELEVAMIENTO";
     }
@@ -118,8 +134,21 @@
         const div = document.createElement('div');
         div.className = 'card nuevo-corte-item';
         div.id = id;
-        div.innerHTML = `<label>CORTE NUEVO</label><input type="text" class="n-nombre"><label>MARCA</label><input type="text" class="n-marca"><label>PRECIO</label><input type="number" class="n-precio" oninput="validaInput(this)"><div class="error-msg">Debe tener 5 o 6 números</div><button onclick="document.getElementById('${id}').remove(); checkForm();" style="color:var(--error); background:none; border:none; cursor:pointer;">ELIMINAR</button>`;
+        div.innerHTML = `<label>CORTE NUEVO</label><input type="text" class="n-nombre"><label>MARCA</label><input type="text" class="n-marca"><label>PRECIO</label><input type="number" class="n-precio" oninput="validaInputNuevo(this)"><div class="error-msg">Debe tener 5 o 6 números</div><button onclick="document.getElementById('${id}').remove(); checkForm();" style="color:var(--error); background:none; border:none; cursor:pointer;">ELIMINAR</button>`;
         document.getElementById('contenedor-nuevos').appendChild(div);
+        checkForm();
+    }
+
+    // Función específica para validar cortes nuevos (ya que solo tienen un precio)
+    function validaInputNuevo(el) {
+        const err = el.nextElementSibling;
+        if (el.value.length > 0 && (el.value.length < 5 || el.value.length > 6)) {
+            err.style.display = 'block';
+            el.style.borderColor = 'var(--error)';
+        } else {
+            err.style.display = 'none';
+            el.style.borderColor = '#ccc';
+        }
         checkForm();
     }
 
