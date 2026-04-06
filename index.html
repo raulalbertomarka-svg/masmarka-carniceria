@@ -8,14 +8,15 @@
         :root { --primary: #1b5e20; --secondary: #f9a825; --bg: #f0f2f5; --error: #d32f2f; --disabled: #9e9e9e; }
         body { font-family: sans-serif; margin: 0; background: var(--bg); padding-bottom: 120px; }
         header { background: var(--primary); color: white; padding: 15px; text-align: center; font-weight: bold; position: sticky; top: 0; z-index: 100; text-transform: uppercase; }
-/* Esto asegura que visualmente se vea en mayúsculas mientras escriben */
-.n-nombre, .n-marca {
-    text-transform: uppercase;
-}
+        .n-nombre, .n-marca { text-transform: uppercase; }
         main { padding: 15px; max-width: 600px; margin: auto; }
         .card { background: white; border-radius: 10px; padding: 15px; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         label { font-size: 11px; color: var(--primary); font-weight: bold; display: block; margin-bottom: 5px; text-transform: uppercase; }
         input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 16px; margin-bottom: 5px; }
+        
+        /* Estilo para campos inválidos */
+        .invalid-selection { border: 2px solid var(--error) !important; background-color: #fff8f8; }
+
         .error-msg { color: var(--error); font-size: 10px; font-weight: bold; display: none; margin-bottom: 10px; }
         .item-carne { border-bottom: 1px solid #eee; padding: 15px 0; }
         .precios-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 5px; }
@@ -31,17 +32,35 @@
 
 <main>
     <div class="card">
-        <label>NOMBRE DEL RELEVADOR</label>
-        <input type="text" id="relevador" list="dl-relevadores" placeholder="Seleccione relevador..." oninput="checkForm()">
+        <label>NOMBRE DEL RELEVADOR (Busque y seleccione)</label>
+        <input type="text" id="relevador" list="dl-relevadores" placeholder="Escriba para buscar..." oninput="validarLista(this, 'dl-relevadores')">
         <datalist id="dl-relevadores">
-            <option value="BLAS LEIVA"><option value="JUAN ZORONDO"><option value="CARMEN LEIVA"><option value="PEDRO YUDICE"><option value="HECTOR ACEVEDO"><option value="JOSE NUÑEZ"><option value="PERLA AQUINO"><option value="ERIKA ESPINOLA"><option value="FLORENCIA CACERES"><option value="MATIAS NUÑEZ"><option value="GABRIELA CACERES"><option value="LETICIA BARRIOS"><option value="KORBIN MERELES"><option value="VIDAL OZORIO"><option value="JULIO NUÑEZ"><option value="DERLIS BRITEZ"><option value="JOSUE CABALLERO">
+            <option value="BLAS LEIVA">
+            <option value="JUAN ZORONDO">
+            <option value="CARMEN LEIVA">
+            <option value="PEDRO YUDICE">
+            <option value="HECTOR ACEVEDO">
+            <option value="JOSE NUÑEZ">
+            <option value="PERLA AQUINO">
+            <option value="ERIKA ESPINOLA">
+            <option value="FLORENCIA CACERES">
+            <option value="MATIAS NUÑEZ">
+            <option value="GABRIELA CACERES">
+            <option value="LETICIA BARRIOS">
+            <option value="KORBIN MERELES">
+            <option value="VIDAL OZORIO">
+            <option value="JULIO NUÑEZ">
+            <option value="DERLIS BRITEZ">
+            <option value="JOSUE CABALLERO">
         </datalist>
+        <div id="err-relevador" class="error-msg">⚠️ Seleccione un nombre de la lista</div>
 
-        <label>LOCAL VISITADO</label>
-        <input type="text" id="local" list="dl-locales" placeholder="Escriba o busque local..." oninput="checkForm()">
+        <label>LOCAL VISITADO (Busque y seleccione)</label>
+        <input type="text" id="local" list="dl-locales" placeholder="Escriba nombre del local..." oninput="validarLista(this, 'dl-locales')">
         <datalist id="dl-locales">
             <option value="AHO AHO"><option value="ARETE LAMBARE"><option value="ARETE PINEDO"><option value="ARETE PRIMER PRESIDENTE"><option value="ARETE SAUSALITO"><option value="BIGGIE VILLA HAYES"><option value="BOX ABASTO"><option value="BOX ARATIRI R2"><option value="BOX CAPIATA R1"><option value="BOX LUQUE"><option value="BOX MARIANO"><option value="BOX MOG"><option value="CASA RICA ESPAÑA"><option value="CASA RICA LAURELES"><option value="CASA RICA MOLAS"><option value="CASA RICA PERSEVERANCIA"><option value="DELIMARKET"><option value="HIPERSEIS"><option value="LA BOMBA AREGUA"><option value="LA BOMBA ÑEMBY"><option value="LA BOMBA PROCERES"><option value="LA BOMBA SANTA TERESA"><option value="LA BOMBA TERMINAL"><option value="LA BOMBA VIA FERREA"><option value="LOS JARDINES JACARANDA"><option value="LOS JARDINES LAGUNA GRANDE"><option value="LOS JARDINES MORA CUE"><option value="LOS JARDINES PRIMAVERA"><option value="LOS JARDINES SAN LORENZO"><option value="LOS JARDINES SPAR"><option value="LOS JARDINES VILLA ADELA"><option value="LUISITO 4 MOJONES"><option value="LUISITO CAPIATA"><option value="LUISITO EUSEBIO AYALA"><option value="LUISITO FELIX BOGADO"><option value="LUISITO ITAUGUA"><option value="LUISITO LIMPIO"><option value="LUISITO LUQUE"><option value="LUISITO MARIANO"><option value="LUISITO ÑEMBY"><option value="LUISITO SAN LORENZO"><option value="LUISITO VILLA ELISA"><option value="LUISITO YPANES"><option value="SUPERSEIS AREGUA"><option value="SUPERSEIS CAMBA CUA"><option value="SUPERSEIS DENIS ROA"><option value="SUPERSEIS EXPRESS MOLAS"><option value="SUPERSEIS EXPRESS PRIMER PRESIDENTE"><option value="SUPERSEIS EXPRESS RI BOQUERON"><option value="SUPERSEIS FERNANDO"><option value="SUPERSEIS GRAN UNION"><option value="SUPERSEIS JAPON"><option value="SUPERSEIS LA NEGRITA"><option value="SUPERSEIS LAMBARE"><option value="SUPERSEIS LAURELTY"><option value="SUPERSEIS LOS LAURELES"><option value="SUPERSEIS MADERO"><option value="SUPERSEIS MBURUCUYA"><option value="SUPERSEIS SAN LORENZO"><option value="SUPERSEIS TOTAL"><option value="SUPERSEIS VILLA MORRA"><option value="SUPERSEIS – SIRIO"><option value="SUPER – GUARANI"><option value="SUPERSEIS – ESPAÑA"><option value="SALEMMA CARMELITAS"><option value="SALEMMA FUENTE"><option value="SALEMMA MULTIPLAZA"><option value="SALEMMA SAN LORENZO"><option value="STOCK 14 Y MEDIO"><option value="STOCK ACCESO SUR"><option value="STOCK AGRONOMO"><option value="STOCK ARTIGAS"><option value="STOCK AVELINO"><option value="STOCK BARRIO OBRERO"><option value="STOCK BOQUERON"><option value="STOCK BRASILIA 1"><option value="STOCK BRASILIA 2"><option value="STOCK BRITEZ BORGES"><option value="STOCK CAACUPE 1"><option value="STOCK CAACUPE 2"><option value="STOCK CALLE I"><option value="STOCK CAPIATA R1"><option value="STOCK CAPIATA R2"><option value="STOCK CARRETERA"><option value="STOCK DEFENSORES"><option value="STOCK DOÑA BERTA"><option value="STOCK EPXRESS 10 de AGOSTO"><option value="STOCK EXPRES FIGUEROA"><option value="STOCK EXPRES TTE MOLAS"><option value="STOCK EXPRESS ACOSTA ÑU"><option value="STOCK EXPRESS AMERICO PICCO"><option value="STOCK EXPRESS AVDA PARAGUAY"><option value="STOCK – YPANE"><option value="STOCK – ITAUGUA 1"><option value="STOCK – ITAUGUA 2"><option value="STOCK – GUARAMBARE"><option value="STOCK - J. AUGUSTO 1"><option value="STOCK - J. AUGUSTO 2"><option value="STOCK – MARIANO 1"><option value="STOCK – MARIANO 2"><option value="STOCK - UNICOMPRA">
         </datalist>
+        <div id="err-local" class="error-msg">⚠️ Seleccione un local válido de la lista</div>
 
         <label>CIUDAD</label>
         <input type="text" id="ciudad" placeholder="Ej: Asunción">
@@ -76,6 +95,22 @@
         checkForm();
     }
 
+    // NUEVA FUNCIÓN: Valida que lo escrito esté en el Datalist
+    function validarLista(input, listId) {
+        const list = document.getElementById(listId);
+        const options = Array.from(list.options).map(opt => opt.value);
+        const errorDiv = input.nextElementSibling.nextElementSibling; // El div de error después del datalist
+
+        if (input.value !== "" && !options.includes(input.value)) {
+            input.classList.add('invalid-selection');
+            errorDiv.style.display = 'block';
+        } else {
+            input.classList.remove('invalid-selection');
+            errorDiv.style.display = 'none';
+        }
+        checkForm();
+    }
+
     function validaInput(el) {
         const row = el.closest('.precios-row');
         const regInput = row.querySelector('.p-reg');
@@ -86,33 +121,24 @@
         const errReg = regInput.nextElementSibling;
         const errOff = offInput.nextElementSibling;
 
-        // Resetear estilos y mensajes
         errReg.style.display = 'none';
         errOff.style.display = 'none';
         regInput.style.borderColor = '#ccc';
         offInput.style.borderColor = '#ccc';
 
-        // 1. Validar longitud Regular
         if (regInput.value.length > 0 && (regInput.value.length < 5 || regInput.value.length > 6)) {
-            errReg.innerText = "Debe tener 5 o 6 números";
             errReg.style.display = 'block';
             regInput.style.borderColor = 'var(--error)';
         }
-
-        // 2. Validar longitud Promo
         if (offInput.value.length > 0 && (offInput.value.length < 5 || offInput.value.length > 6)) {
-            errOff.innerText = "Debe tener 5 o 6 números";
             errOff.style.display = 'block';
             offInput.style.borderColor = 'var(--error)';
         }
-
-        // 3. Validación lógica (Promo no puede ser mayor al Regular)
         if (rVal > 0 && oVal > 0 && oVal > rVal) {
             errOff.innerText = "⚠️ PROMO mayor al Regular";
             errOff.style.display = 'block';
             offInput.style.borderColor = 'var(--error)';
         }
-
         checkForm();
     }
 
@@ -120,44 +146,42 @@
         const btn = document.getElementById('btnGuardar');
         const rel = document.getElementById('relevador').value;
         const loc = document.getElementById('local').value;
-        const errores = Array.from(document.querySelectorAll('.error-msg')).some(e => e.style.display === 'block');
-        btn.disabled = (!rel || !loc || errores);
-        btn.innerText = errores ? "⚠️ CORREGIR DATOS" : "GUARDAR RELEVAMIENTO";
+        
+        // Verifica si hay errores de validación de lista o de precios
+        const tieneErrores = Array.from(document.querySelectorAll('.error-msg')).some(e => e.style.display === 'block');
+        const relInvalido = document.getElementById('relevador').classList.contains('invalid-selection');
+        const locInvalido = document.getElementById('local').classList.contains('invalid-selection');
+
+        btn.disabled = (!rel || !loc || tieneErrores || relInvalido || locInvalido);
+        btn.innerText = (tieneErrores || relInvalido || locInvalido) ? "⚠️ CORREGIR DATOS" : "GUARDAR RELEVAMIENTO";
     }
 
     function filtrar() {
         const val = document.getElementById('buscador').value.toUpperCase();
         document.querySelectorAll('.item-carne').forEach(item => {
             const txt = item.querySelector('span').innerText.toUpperCase();
-            item.style.display = txt.startsWith(val) ? "block" : "none";
+            item.style.display = txt.includes(val) ? "block" : "none";
         });
     }
 
     function agregarNuevo() {
-    const id = Date.now();
-    const div = document.createElement('div');
-    div.className = 'card nuevo-corte-item';
-    div.id = id;
-    div.innerHTML = `
-        <label>CORTE NUEVO</label>
-        <input type="text" class="n-nombre" oninput="this.value = this.value.toUpperCase()">
-        
-        <label>MARCA</label>
-        <input type="text" class="n-marca" oninput="this.value = this.value.toUpperCase()">
-        
-        <label>PRECIO</label>
-        <input type="number" class="n-precio" oninput="validaInputNuevo(this)">
-        <div class="error-msg">Debe tener 5 o 6 números</div>
-        
-        <button onclick="document.getElementById('${id}').remove(); checkForm();" 
-                style="color:var(--error); background:none; border:none; cursor:pointer;">
-            ELIMINAR
-        </button>`;
-    document.getElementById('contenedor-nuevos').appendChild(div);
-    checkForm();
-}
+        const id = Date.now();
+        const div = document.createElement('div');
+        div.className = 'card nuevo-corte-item';
+        div.id = id;
+        div.innerHTML = `
+            <label>CORTE NUEVO</label>
+            <input type="text" class="n-nombre" oninput="this.value = this.value.toUpperCase()">
+            <label>MARCA</label>
+            <input type="text" class="n-marca" oninput="this.value = this.value.toUpperCase()">
+            <label>PRECIO</label>
+            <input type="number" class="n-precio" oninput="validaInputNuevo(this)">
+            <div class="error-msg">Debe tener 5 o 6 números</div>
+            <button onclick="document.getElementById('${id}').remove(); checkForm();" style="color:var(--error); background:none; border:none; cursor:pointer; margin-top:10px;">ELIMINAR</button>`;
+        document.getElementById('contenedor-nuevos').appendChild(div);
+        checkForm();
+    }
 
-    // Función específica para validar cortes nuevos (ya que solo tienen un precio)
     function validaInputNuevo(el) {
         const err = el.nextElementSibling;
         if (el.value.length > 0 && (el.value.length < 5 || el.value.length > 6)) {
@@ -193,7 +217,7 @@
                 relevador: document.getElementById('relevador').value,
                 local: document.getElementById('local').value,
                 ciudad: document.getElementById('ciudad').value,
-                items: fijos, 
+                items: fijos,
                 nuevos: nuevos
             })
         }).then(() => {
