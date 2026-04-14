@@ -414,6 +414,12 @@
     }
 
     function validarYGuardar() {
+        const btn = document.getElementById('btnGuardar');
+        if (btn.disabled) return;
+
+        btn.disabled = true;
+        btn.innerText = "⏳ ENVIANDO RELEVAMIENTO...";
+
         const fijos = [];
         document.querySelectorAll('.item-carne').forEach(item => {
             const r = item.querySelector('.p-reg').value;
@@ -440,6 +446,10 @@
         }).then(() => {
             alert("¡Guardado en MasMarkaAPP!");
             location.reload();
+        }).catch(() => {
+            alert("Error al enviar. Intente nuevamente.");
+            btn.disabled = false;
+            btn.innerText = "GUARDAR RELEVAMIENTO";
         });
     }
 </script>
